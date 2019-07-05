@@ -38,10 +38,7 @@ public class ItemInfoDao implements AbstractDao<ItemInfo> {
 	}
 
 	public boolean existsItemInfo(String name) {
-		if (findByName(name) != null) {
-			return true;
-		}
-		return false;
+		return findByName(name) != null;
 	}
 
 	public ItemInfo findByName(String name) {

@@ -1,5 +1,6 @@
 package com.celfocus.training.controllers;
 
+import java.security.InvalidParameterException;
 import java.text.SimpleDateFormat;
 import java.util.Objects;
 
@@ -10,9 +11,11 @@ import com.celfocus.training.service.AppService;
 import com.celfocus.training.service.frontend.html.HtmlFrontendRequest;
 import com.celfocus.training.service.frontend.xml.XmlFrontendRequest;
 import com.celfocus.training.util.Utils;
+import com.celfocus.training.util.exception.RefactorigException;
 
 public class FrontendRequest {
 
+	private static final String INVALID_FORMAT_TYPE = "Invalid Format Type";
 	private static final String DATE_FORMAT = "DD/MM/YYYY";
 
 	enum FormatTypes {
@@ -39,14 +42,14 @@ public class FrontendRequest {
 	 * @return The text in the wanted format with the user information.
 	 * @throws Exception
 	 */
-	public String getFrontendUser(String type, User user) throws Exception {
+	public String getFrontendUser(String type, User user) {
 		switch (FormatTypes.valueOf(type)) {
 		case HTML:
 			return htmlFrontendRequest.getFrontendUser(user);
 		case XML:
 			return xmlFrontendRequest.getFrontendUser(user);
 		default:
-			return "";
+			throw new InvalidParameterException(INVALID_FORMAT_TYPE);
 		}
 	}
 
@@ -60,14 +63,14 @@ public class FrontendRequest {
 	 * @return The text in the wanted format with the shopping cart information.
 	 * @throws Exception
 	 */
-	public String getFrontendShoppingCart(String type, ShoppingCart shoppingCart) throws Exception {
+	public String getFrontendShoppingCart(String type, ShoppingCart shoppingCart) {
 		switch (FormatTypes.valueOf(type)) {
 		case HTML:
 			return htmlFrontendRequest.getFrontendShoppingCart(shoppingCart);
 		case XML:
 			return xmlFrontendRequest.getFrontendShoppingCart(shoppingCart);
 		default:
-			return "";
+			throw new InvalidParameterException(INVALID_FORMAT_TYPE);
 		}
 	}
 
@@ -81,14 +84,14 @@ public class FrontendRequest {
 	 * @return The text in the wanted format with the Item information.
 	 * @throws Exception
 	 */
-	public String getFrontendItem(String type, ItemInfo itemInfo) throws Exception {
+	public String getFrontendItem(String type, ItemInfo itemInfo) {
 		switch (FormatTypes.valueOf(type)) {
 		case HTML:
 			return htmlFrontendRequest.getFrontendItemInfo(itemInfo);
 		case XML:
 			return xmlFrontendRequest.getFrontendItemInfo(itemInfo);
 		default:
-			return "";
+			throw new InvalidParameterException(INVALID_FORMAT_TYPE);
 		}
 	}
 
@@ -99,9 +102,10 @@ public class FrontendRequest {
 	 *            Mandatory - The name of the user
 	 * @param birthDateStr
 	 *            Mandatory - The user birth date, in String format.
+	 * @throws RefactorigException
 	 * @throws Exception
 	 */
-	public User upsertUser(String name, String birthDate) throws Exception {
+	public User upsertUser(String name, String birthDate) throws RefactorigException {
 		Objects.requireNonNull(name);
 		return appService.upsertUser(name, Utils.toDate(birthDate, new SimpleDateFormat(DATE_FORMAT)));
 	}
@@ -113,7 +117,7 @@ public class FrontendRequest {
 	 *            The user name.
 	 * @throws Exception
 	 */
-	public void deleteUser(String userName) throws Exception {
+	public void deleteUser(String userName) {
 		appService.deleteUser(userName);
 	}
 
@@ -129,7 +133,7 @@ public class FrontendRequest {
 	 * @throws Exception
 	 *             If inpupt is null or an error occurs
 	 */
-	public void addItemToShoppingCart(String userName, String itemName, int quantity) throws Exception {
+	public void addItemToShoppingCart(String userName, String itemName, int quantity) {
 		Objects.requireNonNull(userName);
 		Objects.requireNonNull(itemName);
 		appService.addItemToUserShoppingCart(userName, Utils.convertItemName(itemName), quantity);

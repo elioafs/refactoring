@@ -12,11 +12,14 @@ import com.celfocus.training.util.Utils;
 
 public class XmlFrontendRequest implements UserFrontendRequest, ShoppingCartFrontendRequest, ItemInfoFrontendRequest {
 
+	private static final String DATE_FORMAT = "DD/MM/YYYY";
+
 	private static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>";
 
 	private static final String USER_TEMPLATE = XML_HEADER
 			+ "<name>%s</name><birthDate>%s</birthDate><isSenior>%s</isSenior>";
-	private static final String SHOPPING_CART_TEMPLATE = XML_HEADER + "<user>%s</user><items>%s</items>";
+	private static final String SHOPPING_CART_TEMPLATE = XML_HEADER
+			+ "<shoppingCart><user>%s</user><items>%s</items></shoppingCart>";
 	private static final String ITEM_INFO_TEMPLATE = "<name>%s</name><value>%s</value>";
 
 	@Override

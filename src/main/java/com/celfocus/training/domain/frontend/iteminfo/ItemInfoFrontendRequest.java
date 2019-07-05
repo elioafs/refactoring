@@ -4,6 +4,6 @@ import com.celfocus.training.domain.iteminfo.ItemInfo;
 
 public interface ItemInfoFrontendRequest {
 
-	public String getFrontendItemInfo(ItemInfo item) throws Exception;
+	public String getFrontendItemInfo(ItemInfo item);
 
 }

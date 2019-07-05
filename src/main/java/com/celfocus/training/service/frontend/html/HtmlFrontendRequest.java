@@ -13,9 +13,11 @@ import com.celfocus.training.util.Utils;
 
 public class HtmlFrontendRequest implements UserFrontendRequest, ShoppingCartFrontendRequest, ItemInfoFrontendRequest {
 
+	private static final String DATE_FORMAT = "DD/MM/YYYY";
+
 	private static final String USER_TEMPLATE = "<div><h1>User</h1><span>%s</span><span>%s</span><span>%s</span></div>";
 	private static final String SHOPPINGCART_TEMPLATE = "<div><h1>ShoppingCart</h1><span>%s</span><span>%s</span></div>";
-	private static final String ITEM_INFO_TEMPLATE = "<div><h1>ItemInfo</h1><span>%s</span><span>%s</span><span>%s</span></div>";
+	private static final String ITEM_INFO_TEMPLATE = "<div><h1>ItemInfo</h1><span>%s</span><span>%s</span></div>";
 
 	@Override
 	public String getFrontendUser(User user) {
@@ -27,12 +29,11 @@ public class HtmlFrontendRequest implements UserFrontendRequest, ShoppingCartFro
 	@Override
 	public String getFrontendShoppingCart(ShoppingCart shoppingCart) {
 		Objects.requireNonNull(shoppingCart);
-
-		String itemsStr = "";
+		StringBuilder sb = new StringBuilder();
 		for (ShoppingCartItem item : shoppingCart.getItems()) {
-			itemsStr += String.format(ITEM_INFO_TEMPLATE, item.getInfo().getName(), item.getInfo().getValue());
+			sb.append(String.format(ITEM_INFO_TEMPLATE, item.getInfo().getName(), item.getInfo().getValue()));
 		}
-		return String.format(SHOPPINGCART_TEMPLATE, getFrontendUser(shoppingCart.getUser()), itemsStr);
+		return String.format(SHOPPINGCART_TEMPLATE, getFrontendUser(shoppingCart.getUser()), sb.toString());
 	}
 
 	@Override

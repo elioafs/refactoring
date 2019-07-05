@@ -32,10 +32,7 @@ public class ShoppingCartDao implements AbstractDao<ShoppingCart> {
 	}
 
 	public boolean existsShoppingCart(String username) {
-		if (findByUserName(username) != null) {
-			return true;
-		}
-		return false;
+		return findByUserName(username) != null;
 	}
 
 	public ShoppingCart findByUserName(String userName) {

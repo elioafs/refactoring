@@ -1,43 +1,27 @@
 package com.celfocus.training.controllers;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
+
+import org.junit.Test;
 
 import com.celfocus.training.domain.iteminfo.ItemInfo;
 import com.celfocus.training.domain.shoppingcart.ShoppingCart;
 import com.celfocus.training.domain.user.User;
 import com.celfocus.training.util.Utils;
+import com.celfocus.training.util.exception.RefactorigException;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+public class FrontendRequestTest {
 
-public class FrontendRequestTest extends TestCase {
+	private static final String EXCEPTION_SHOULD_BE_THROWN = "Exception should be thrown!";
 
-	FrontendRequest request = new FrontendRequest();
+	@Test
+	public void testApp() throws RefactorigException {
 
-	/**
-	 * Create the test case
-	 *
-	 * @param testName
-	 *            name of the test case
-	 */
-	public FrontendRequestTest(String testName) {
-		super(testName);
-	}
-
-	/**
-	 * @return the suite of tests being tested
-	 */
-	public static Test suite() {
-		return new TestSuite(FrontendRequestTest.class);
-	}
-
-	/**
-	 * Test
-	 * 
-	 * @throws Exception
-	 */
-	public void testApp() throws Exception {
+		FrontendRequest request = new FrontendRequest();
 
 		// Test User create
 		User user = request.upsertUser("user01", "03/04/1992");
@@ -105,12 +89,32 @@ public class FrontendRequestTest extends TestCase {
 		String xmlItem = request.getFrontendItem("XML", dummyInfo);
 		assertNotNull(xmlItem);
 
-		String emptyUser = request.getFrontendUser("something", user);
-		assertTrue("".equals(emptyUser));
-		String emptyShoppingCart = request.getFrontendShoppingCart("something", dummyCart);
-		assertTrue("".equals(emptyShoppingCart));
-		String emptyItem = request.getFrontendItem("something", dummyInfo);
-		assertTrue("".equals(emptyItem));
+		boolean excetpion = false;
+		try {
+			request.getFrontendUser("asdfsdaf", user);
+			fail(EXCEPTION_SHOULD_BE_THROWN);
+		} catch (Exception e) {
+			excetpion = true;
+		}
+		assertTrue(excetpion);
+
+		excetpion = false;
+		try {
+			request.getFrontendShoppingCart("asfsa", dummyCart);
+			fail(EXCEPTION_SHOULD_BE_THROWN);
+		} catch (Exception e) {
+			excetpion = true;
+		}
+		assertTrue(excetpion);
+
+		excetpion = false;
+		try {
+			request.getFrontendItem("asfasfg", dummyInfo);
+			fail(EXCEPTION_SHOULD_BE_THROWN);
+		} catch (Exception e) {
+			excetpion = true;
+		}
+		assertTrue(excetpion);
 
 	}
 }

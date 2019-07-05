@@ -46,10 +46,7 @@ public class UserDao implements AbstractDao<User> {
 	}
 
 	public boolean userExists(String name) {
-		if (findUserByName(name) != null) {
-			return true;
-		}
-		return false;
+		return findUserByName(name) != null;
 	}
 
 	public User findUserByName(String name) {
